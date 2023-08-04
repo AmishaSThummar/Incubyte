@@ -1,0 +1,32 @@
+initial starting point (x(E|W), y(N|S), z(above|below))
+
+
+the direction it is facing (N, S, E, W, Up, Down)
+
+    1.Move the spacecraft forward/backward (f, b): The spacecraft moves one step forward or backward based on its current direction.
+    2.Turn the spacecraft left/right (l, r): The spacecraft rotates 90 degrees to the left or right, changing its facing direction.
+    3.Turn the spacecraft up/down (u, d): The spacecraft changes its angle, rotating upwards or downwards.
+
+
+Example
+Given the starting point (0, 0, 0) following (x, y, z) and initial direction N, the following commands should result in the indicated final 
+position and direction:
+
+Commands: [“f”, “r”, “u”, “b”, “l”]
+
+Starting Position: (0, 0, 0)
+
+Initial Direction: N
+
+“f” - (0, 1, 0) - N
+“r” - (0, 1, 0) - E
+“u” - (0, 1, 0) - U
+“b” - (0, 1, -1) - U
+“l” - (0, 1, -1) - W
+Final Position: (0, 1, -1)
+
+Final Direction: W
+
+Observations:
+left-right and up-down =>stay at same coordinate
+forward-backward => changes coordinate as per its current direction
