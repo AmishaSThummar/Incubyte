@@ -30,3 +30,5 @@ Final Direction: W
 Observations:
 left-right and up-down =>stay at same coordinate
 forward-backward => changes coordinate as per its current direction
+
+As spacecraft cannot move/rotate diagonally => I have taken 90degree rotation for upward/downward

@@ -17,7 +17,9 @@ public:
     int x, y, z;
     // indicates direction of the spacecraft
     char dir;
-    int angle;
+    // 2 angles are required => one for horizontal and one for vertical
+    int angle1;
+    int angle2;
 
     Spacecraft(int x, int y, int z, char dir)
     {
@@ -32,13 +34,22 @@ public:
         ang2dir[270] = 'W';
 
         // as per the direction it will have angle
+        bool found = false;    //if direction is up/down
+        angle1 = angle2 = 0;
         for (auto pos : ang2dir)
         {
             if (pos.second == dir)
             {
-                angle = pos.first;
+                found = true;
+                angle1 = pos.first;
                 break;
             }
+        }
+        if(!found){
+            if(dir == 'U')
+                angle2 = 90;
+            else
+                angle2 = 270;
         }
     }
 
@@ -80,33 +91,40 @@ public:
         unordered_map<char, int> com2ang;
         com2ang['l'] = -90;
         com2ang['r'] = 90;
+        // clockwise
+        com2ang['u'] = 90;
+        com2ang['d'] = -90;
 
-        if (angle < 180)
-        {
-            com2ang['u'] = -90;
-            com2ang['d'] = 90;
+        // for left-right turn angle1 will change and for upward-downward turn angle2 will change.
+        if(command == 'l' || command == 'r'){
+
+            angle2 = 0;    //because diagonal moves are not there
+            int newAngle = angle1 + com2ang[command];
+            angle1 = (newAngle) % 360;
+
+            if (angle1 < 0)
+                angle1 += 360;
+
+            dir = ang2dir[angle1];
         }
-        else
-        {
-            com2ang['u'] = 90;
-            com2ang['d'] = -90;
+        else{
+            int newAngle = angle2 + com2ang[command];
+            angle2 = (newAngle) % 360;
+
+            if (angle2 < 0)
+                angle2 += 360;
+
+            if(angle2 == 90){
+                dir = 'U';
+            }
+            else if(angle2 == 270){
+                dir = 'D';
+            }
+            else{
+                int temp = (angle1 + angle2) % 360;
+                dir = ang2dir[temp];
+            }
         }
-
-        // angle of the spacecraft is between 0-360.
-        int newAngle = angle + com2ang[command];
-        angle = (newAngle) % 360;
-
-        if (angle < 0)
-            angle += 360;
-
-        // if command is neither upward or backward then direction as per angle.
-        if (command != 'u' && command != 'd')
-        {
-            char newDir = ang2dir[angle];
-            dir = newDir;
-        }
-        else
-            dir = command - 'a' + 'A';
     }
 };
 
@@ -157,4 +175,9 @@ Input:
 N
 0 0 0
 frubl
+
+N
+0 0 0
+ul
+uldr
 */
